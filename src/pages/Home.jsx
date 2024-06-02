@@ -1,4 +1,4 @@
-import { Alert, Box, Spinner } from "@chakra-ui/react";
+import { Alert, AlertIcon, Box, Select, Spinner } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -17,9 +17,8 @@ const Home = () => {
         );
         setProducts(resp.data);
         setLoading(false);
-        setError(false);
       } catch (error) {
-        setLoading(false);
+        setLoading("Failed to Fetch Products");
         setError(true);
       }
     };
@@ -31,11 +30,18 @@ const Home = () => {
       {loading ? (
         <Spinner size="xl" />
       ) : error ? (
-          <Alert status="error">
-            
+        <Alert status="error">
+          <AlertIcon />
+          {error}
         </Alert>
       ) : (
-        ""
+        <Box p={4}>
+          <Select placeholder="Sort by Price">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+              </Select>
+              <Select placeholder="Filter by Category"></Select>
+        </Box>
       )}
     </Box>
   );
