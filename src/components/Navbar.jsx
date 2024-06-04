@@ -1,35 +1,38 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Button, Flex, Tag } from "@chakra-ui/react";
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthProvider";
 
 const Navbar = () => {
   const { authState, logout } = useContext(AuthContext);
-  //   console.log(authState);
-
-  const handleLogout = () => {
-    logout();
-  };
   return (
     <Flex
-      as={"nav"}
-      bg={"blue.500"}
-      color={"white"}
-      justify={"space-between"}
+      boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
+      position={"fixed"}
+      top={0}
+      left={0}
+      zIndex={10}
+      bg={"white"}
+      w={"100%"}
+      justifyContent={"space-evenly"}
       p={4}
     >
-      {authState.isAuthenticated ? (
+      {authState?.isAuthenticated ? (
         <>
-          <Box>{authState?.email}</Box>
-          <Box>
-            <Link to="/">Home</Link>
-            <Link to="/login" onClick={handleLogout}>
+          {authState?.token && <Tag>{authState?.email}</Tag>}
+          <Button>
+            <Link to={"/"}>Home</Link>
+          </Button>
+          <Button>
+            <Link to={"/login"} onClick={() => logout()}>
               Logout
             </Link>
-          </Box>
+          </Button>
         </>
       ) : (
-        <Link to={"/login"}>Login</Link>
+        <Button>
+          <Link to={"/login"}>Login</Link>
+        </Button>
       )}
     </Flex>
   );

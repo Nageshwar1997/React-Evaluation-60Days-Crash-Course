@@ -1,28 +1,35 @@
-/* eslint-disable react/prop-types */
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import ProductDetails from "./pages/ProductDetails";
-import Navbar from "./components/Navbar";
+import { AuthContext } from "./context/AuthProvider";
 import { useContext } from "react";
-import { AuthContext } from "./context/AuthContext";
 
 function App() {
   const { authState } = useContext(AuthContext);
+  console.log(authState);
   return (
     <>
       <Navbar />
-      {!authState.isAuthenticated ? (
-        <Routes>
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      ) : (
-        <Routes>
-          <Route path="/" element={<Home />} />,
-          <Route path="/product" element={<ProductDetails />} />
-        </Routes>
-      )}
+      <Routes>
+        {authState.isAuthenticated ? (
+          <>
+            <Route path="/" element={<Home />} />
+            <Route path="/productDetails/:id" element={<ProductDetails />} />
+            <Route path="*" element={<Navigate to={"/"} />} />
+          </>
+        ) : (
+          <>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="*" element={<Navigate to="/login" />} />
+          </>
+        )}
+      </Routes>
+      <Footer />
     </>
   );
 }
