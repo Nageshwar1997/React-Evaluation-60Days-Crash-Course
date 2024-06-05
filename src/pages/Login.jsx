@@ -1,7 +1,8 @@
 import { Button, FormLabel, Input, Text, useToast } from "@chakra-ui/react";
 import { useContext, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
+import axios from "axios";
 
 const Login = () => {
   const [formState, setFormState] = useState({
@@ -11,10 +12,11 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const emailInputRef = useRef(null);
-  const token = "r0bINJoKeRGoTham911";
   const toast = useToast();
-  const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
+  const {
+    login,
+    authState: { isAuthenticated },
+  } = useContext(AuthContext);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -23,17 +25,15 @@ const Login = () => {
       [name]: value,
     });
   };
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (
-      formState.email === "bruce@wayne.com" &&
-      formState.password === "gotham123"
-    ) {
-      setFormState({
-        ...formState,
-        token: token,
+    try {
+      const response = await axios({
+        method: "post",
+        url: "https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/login",
+        data: formState,
       });
-      localStorage.setItem("loginData", JSON.stringify({ ...formState , token}));
+      login(formState.email, response.data.token);
       toast({
         title: "Login Successfully",
         description: "You are redirecting to Home page",
@@ -41,11 +41,7 @@ const Login = () => {
         duration: 3000,
         isClosable: true,
       });
-
-      login(formState.email,token);
-
-      navigate("/");
-    } else {
+    } catch (error) {
       toast({
         title: "DonLogin Failed",
         description: "Please check email & password",
@@ -59,6 +55,10 @@ const Login = () => {
   useEffect(() => {
     emailInputRef.current.focus();
   }, []);
+
+  if (isAuthenticated) {
+    return <Navigate to="/" />;
+  }
   return (
     <form
       onSubmit={handleLogin}

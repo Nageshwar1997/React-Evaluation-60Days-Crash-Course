@@ -45,7 +45,7 @@ const Home = () => {
           title: "Done",
           description: "Product Fetched Successfully.",
           status: "success",
-          duration: 3000,
+          duration: 000,
           isClosable: true,
         });
       }

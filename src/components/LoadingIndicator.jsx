@@ -1,8 +1,8 @@
-import { Box, Heading, Spinner } from "@chakra-ui/react";
+import { Flex, Heading, Spinner } from "@chakra-ui/react";
 
 const LoadingIndicator = () => {
   return (
-    <Box>
+    <Flex justify={"center"} align={"center"} mt={"120px"} direction={"column"} gap={5}>
       <Spinner
         thickness="4px"
         speed="0.65s"
@@ -11,7 +11,7 @@ const LoadingIndicator = () => {
         size="xl"
       />
       <Heading as={"h1"}>Loading.....</Heading>
-    </Box>
+    </Flex>
   );
 };
 

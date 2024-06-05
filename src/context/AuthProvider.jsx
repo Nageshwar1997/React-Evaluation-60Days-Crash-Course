@@ -3,17 +3,12 @@ import { createContext, useState } from "react";
 
 export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
-  let loginData = JSON.parse(localStorage.getItem("loginData")) || {
-    isAuthenticated: false,
-    token: null,
-    email: null,
-  };
-  console.log(loginData);
+  
 
   const [authState, setAuthState] = useState({
-    isAuthenticated: loginData?.token && loginData?.email ? true : false,
-    token: loginData.token || null,
-    email: loginData.email || null,
+    isAuthenticated:  false,
+    token: null,
+    email: null,
   });
 
   const login = (email, token) => {

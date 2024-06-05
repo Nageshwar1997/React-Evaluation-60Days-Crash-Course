@@ -36,7 +36,9 @@ const ProductDetails = () => {
       duration: 3000,
       isClosable: true,
     });
-    navigate("/");
+    setTimeout(() => {
+      navigate("/");
+    }, [1000]);
   };
   useEffect(() => {
     fetchProduct();
